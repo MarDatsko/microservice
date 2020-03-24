@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: storage-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: config
+        skipSslValidation: true
+      failFast: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+      fetch-registry: true
+      registerWithEureka: true
