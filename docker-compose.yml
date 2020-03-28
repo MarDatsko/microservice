@@ -1,0 +1,53 @@
+version: "2.2"
+services:
+
+  discovery:
+    image: mardatsko/discovery-server:discovery-server
+    container_name: discovery
+    restart: on-failure
+    network_mode: host
+    ports:
+      - 8761:8761
+
+  config:
+    image: mardatsko/config-server:config-server
+    container_name: config
+    network_mode: host
+    depends_on:
+      - discovery
+    ports:
+    - 8888:8888
+
+  movie-info:
+    image: mardatsko/customer-server:customer-server
+    container_name: customer
+    restart: on-failure
+    network_mode: host
+    depends_on:
+      - discovery
+      - config
+    ports:
+    - 8085:8085
+
+
+  ratings-data:
+    image: mardatsko/supplier-server:supplier-server
+    container_name: supplier
+    network_mode: host
+    restart: on-failure
+    depends_on:
+      - discovery
+      - config
+    ports:
+    - 8086:8086
+
+  movie-catalog:
+    image: mardatsko/storage-server:storage-server
+    container_name: storage
+    network_mode: host
+    restart: on-failure
+    depends_on:
+      - discovery
+      - config
+    ports:
+    - 8084:8084
